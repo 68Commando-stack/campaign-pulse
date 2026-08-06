@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Manager Tools Blast - Live Pulse</title>
+<title>Starting Monday - Signup &amp; Activation Pulse</title>
 <style>
   :root {
     color-scheme: light;
     --surface-1: #fcfcfb; --page: #f9f9f7;
     --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
     --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
-    --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+    --series-1: #2a78d6;
+    --step-1: #86b6ef; --step-2: #5598e7; --step-3: #2a78d6; --step-4: #1c5cab;
     --good-text: #006300; --critical: #d03b3b; --warning: #fab219;
     --btn-bg: #0b0b0b; --btn-ink: #ffffff;
   }
@@ -21,7 +22,8 @@
       --surface-1: #1a1a19; --page: #0d0d0d;
       --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
       --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+      --series-1: #3987e5;
+      --step-1: #6da7ec; --step-2: #3987e5; --step-3: #256abf; --step-4: #184f95;
       --good-text: #0ca30c; --btn-bg: #ffffff; --btn-ink: #0b0b0b;
     }
   }
@@ -31,10 +33,9 @@
     background: var(--page); color: var(--text-primary);
     min-height: 100vh; padding: 24px 16px 48px;
   }
-  .wrap { max-width: 1060px; margin: 0 auto; }
-  .hdr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
   .hdr h1 { font-size: 22px; margin: 0; letter-spacing: -0.01em; }
-  .hdr .sub { color: var(--text-secondary); font-size: 14px; }
+  .hdr .sub { color: var(--text-secondary); font-size: 14px; margin-top: 4px; }
   .statusbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 14px 0 20px; font-size: 13px; color: var(--text-secondary); }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); margin-right: 6px; vertical-align: 1px; }
   .dot.live { background: var(--good-text); }
@@ -45,44 +46,49 @@
   .banner.show { display: block; }
   .banner .bt { font-weight: 700; }
   .banner.warn { border-left: 4px solid var(--warning); }
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin-bottom: 10px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 22px; }
   .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; min-width: 0; }
   .tile .lbl { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.02em; }
   .tile .val { font-size: 34px; font-weight: 700; line-height: 1.15; margin-top: 4px; }
   .tile .val.pending { color: var(--text-muted); font-size: 24px; }
   .tile .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
   .tile.hero { grid-column: span 2; }
-  .tile.hero .val { font-size: 48px; }
-  @media (max-width: 480px) { .tile.hero { grid-column: span 1; } }
-  .rates { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 6px 2px 24px; font-size: 13px; color: var(--text-secondary); }
-  .rates b { color: var(--text-primary); font-weight: 700; }
+  .tile.hero .val { font-size: 46px; }
+  @media (max-width: 520px) { .tile.hero { grid-column: span 1; } }
   .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
   .card h2 { font-size: 15px; margin: 0 0 2px; }
-  .card .note { font-size: 12.5px; color: var(--text-muted); margin: 0 0 10px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--text-secondary); margin: 4px 0 6px; }
-  .legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .card .note { font-size: 12.5px; color: var(--text-muted); margin: 0 0 12px; }
   .chartbox { position: relative; overflow-x: auto; }
   .chartbox svg { display: block; }
   .tip { position: absolute; pointer-events: none; display: none; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.18); padding: 8px 11px; font-size: 12.5px; white-space: nowrap; z-index: 5; }
   .tip .t { font-weight: 700; margin-bottom: 3px; }
-  .tip .r { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
-  .tip .r b { color: var(--text-primary); margin-left: auto; padding-left: 14px; font-variant-numeric: tabular-nums; }
+  .tip .r { color: var(--text-secondary); }
+  .tip .r b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .funnel { display: flex; flex-direction: column; gap: 10px; }
+  .frow { display: grid; grid-template-columns: 150px 1fr; gap: 12px; align-items: center; }
+  @media (max-width: 520px) { .frow { grid-template-columns: 110px 1fr; } }
+  .frow .fname { font-size: 13px; color: var(--text-secondary); }
+  .fbarwrap { position: relative; height: 30px; background: transparent; }
+  .fbar { height: 100%; border-radius: 0 4px 4px 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; min-width: 2px; }
+  .fbar span { font-size: 12.5px; font-weight: 700; color: #ffffff; }
+  .fmeta { position: absolute; top: 0; height: 100%; display: flex; align-items: center; font-size: 12.5px; color: var(--text-secondary); padding-left: 8px; }
   table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
-  table.data th, table.data td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+  table.data th, table.data td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
   table.data th { color: var(--text-secondary); font-weight: 600; }
   table.data th:first-child, table.data td:first-child { text-align: left; }
-  details summary { cursor: pointer; font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+  details summary { cursor: pointer; font-size: 13px; color: var(--text-secondary); margin-top: 10px; }
   .scrollwrap { overflow-x: auto; }
-  .empty { color: var(--text-muted); font-size: 13.5px; padding: 10px 2px; }
+  .empty { color: var(--text-muted); font-size: 13.5px; padding: 8px 2px; }
   .foot { font-size: 12.5px; color: var(--text-muted); line-height: 1.65; }
   .foot ul { margin: 6px 0 0; padding-left: 18px; }
+  .foot b { color: var(--text-secondary); }
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="hdr">
-      <h1>Manager Tools Blast - Live Pulse</h1>
-      <span class="sub">Mark Horstman email -> startingmonday.app/managertools · blast window opens Wed Aug 5, 12:00 AM PT</span>
+      <h1>Starting Monday - Signup &amp; Activation Pulse</h1>
+      <div class="sub">New users, onboarding drop-off, and where they say they came from. Live from production.</div>
     </div>
 
     <div class="statusbar">
@@ -96,75 +102,64 @@
 
     <div class="tiles">
       <div class="tile hero">
-        <div class="lbl">NEW REGISTRATIONS (since blast)</div>
-        <div class="val pending" id="v-signups">-</div>
-        <div class="sub" id="s-signups">signup_source = managertools</div>
+        <div class="lbl">SIGNUPS - LAST 30 DAYS</div>
+        <div class="val pending" id="v-30d">-</div>
+        <div class="sub" id="s-30d">&nbsp;</div>
       </div>
       <div class="tile">
-        <div class="lbl">LANDING CTA CLICKS</div>
-        <div class="val pending" id="v-cta">-</div>
-        <div class="sub" id="s-cta">on /managertools</div>
+        <div class="lbl">TODAY</div>
+        <div class="val pending" id="v-today">-</div>
+        <div class="sub" id="s-today">&nbsp;</div>
       </div>
       <div class="tile">
-        <div class="lbl">FREE TRIALS (60-day)</div>
-        <div class="val pending" id="v-trials">-</div>
-        <div class="sub" id="s-trials">auto-granted at signup</div>
+        <div class="lbl">LAST 7 DAYS</div>
+        <div class="val pending" id="v-7d">-</div>
+        <div class="sub" id="s-7d">&nbsp;</div>
       </div>
       <div class="tile">
-        <div class="lbl">ONBOARDING DONE</div>
-        <div class="val pending" id="v-onb">-</div>
-        <div class="sub" id="s-onb">onboarding_completed</div>
+        <div class="lbl">ACTIVE (7 DAYS)</div>
+        <div class="val pending" id="v-engaged">-</div>
+        <div class="sub" id="s-engaged">users with any activity</div>
       </div>
       <div class="tile">
-        <div class="lbl">INTAKE DONE</div>
-        <div class="val pending" id="v-intake">-</div>
-        <div class="sub" id="s-intake">strategy intake saved</div>
-      </div>
-      <div class="tile">
-        <div class="lbl">ACTIVATED</div>
-        <div class="val pending" id="v-act">-</div>
-        <div class="sub" id="s-act">added >=1 target company</div>
-      </div>
-      <div class="tile">
-        <div class="lbl">LANDING PAGE VIEWS</div>
-        <div class="val pending" id="v-views">-</div>
-        <div class="sub" id="s-views">all landing pages*</div>
+        <div class="lbl">TOTAL USERS</div>
+        <div class="val pending" id="v-total">-</div>
+        <div class="sub" id="s-total">all time</div>
       </div>
     </div>
 
-    <div class="rates" id="rates"></div>
-
     <div class="card">
-      <h2>Hourly trend - last 48 hours</h2>
-      <p class="note">Times shown in your local timezone. Dashed marker = blast window opens.</p>
-      <div class="legend">
-        <span><span class="sw" style="background:var(--series-1)"></span>Landing views (all pages)</span>
-        <span><span class="sw" style="background:var(--series-2)"></span>CTA clicks (/managertools)</span>
-        <span><span class="sw" style="background:var(--series-3)"></span>Registrations (cohort)</span>
-      </div>
+      <h2>Daily signups - last 30 days</h2>
+      <p class="note">Dashed line = prior baseline (daily average from the 30 days before last month). A bar clearing it is a real spike.</p>
       <div class="chartbox" id="chartbox">
         <div id="chartMount"></div>
         <div class="tip" id="tip"></div>
       </div>
       <details>
-        <summary>View hourly data as a table</summary>
-        <div class="scrollwrap"><table class="data" id="hourlyTable"></table></div>
+        <summary>View daily counts as a table</summary>
+        <div class="scrollwrap"><table class="data" id="dailyTable"></table></div>
       </details>
     </div>
 
     <div class="card">
-      <h2>What the cohort did next (since blast)</h2>
-      <p class="note">Product events from managertools-attributed users after signing up.</p>
-      <div id="cohortEvents" class="empty">No cohort activity yet.</div>
+      <h2>Activation funnel - users who signed up in the last 30 days</h2>
+      <p class="note">Each stage shows how many of those users reached it, and what share of signups that is. The widest gap is where to focus.</p>
+      <div class="funnel" id="funnel"><div class="empty">Loading...</div></div>
+    </div>
+
+    <div class="card">
+      <h2>How they say they heard about us</h2>
+      <p class="note">Self-reported at signup. Optional field, so expect most to be unreported - it is the only attribution we have without tracked links.</p>
+      <div id="sources" class="empty">Loading...</div>
     </div>
 
     <div class="card foot">
       <b>Reading this dashboard</b>
       <ul>
-        <li>Cohort attribution: users whose signup carried <code>utm_source=managertools</code>. "All-time" counts include pre-blast test signups.</li>
-        <li>*Landing page views cover authenticated visitors on all landing pages; anonymous click-through volume lives in PostHog. CTA clicks are /managertools-specific.</li>
-        <li>Free trials are auto-granted at signup (no credit card), so trials should equal registrations; a gap means something is broken.</li>
-        <li>Live from the production database. Auto-refresh every 15 minutes while open; use Refresh now anytime. This link contains its own access key - do not post it publicly.</li>
+        <li><b>Signups</b> come straight from the users table - the one number here that cannot be undercounted.</li>
+        <li><b>Attribution is self-reported only.</b> The "How did you hear about us?" dropdown is optional and sits low on the signup form, so "(not reported)" will dominate. Traffic arriving without a tracked link cannot be attributed any other way.</li>
+        <li><b>Anonymous visits are not measured at all</b> - the homepage carries no analytics, so visitors who never sign up are invisible here and in PostHog.</li>
+        <li>Data is live from the production database, auto-refreshed every 15 minutes. This link contains its own access key - do not post it publicly.</li>
       </ul>
     </div>
   </div>
@@ -173,23 +168,24 @@
 (function () {
   'use strict';
   var REFRESH_MS = 15 * 60 * 1000;
-  var BLAST_START_MS = Date.parse('2026-08-05T07:00:00Z');
-  var el = function (id) { return document.getElementById(id); };
-  var state = { data: null, lastUpdatedMs: null, refreshing: false, retried: false };
-
   var API_BASE = 'https://mytnhoxcgvnzxhgcumkf.supabase.co/functions/v1/campaign-pulse';
   var KEY = new URL(location.href).searchParams.get('k') || '';
   var jsonUrl = API_BASE + '?format=json&k=' + encodeURIComponent(KEY);
 
+  var el = function (id) { return document.getElementById(id); };
+  var state = { data: null, lastUpdatedMs: null, refreshing: false, retried: false };
+
   function fmtWhen(ms) { return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms)); }
-  function fmtHour(ms) { return new Intl.DateTimeFormat(undefined, { weekday: 'short', hour: 'numeric' }).format(new Date(ms)); }
+  function fmtDay(dayStr) {
+    var d = new Date(dayStr + 'T12:00:00Z');
+    return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(d);
+  }
   function ago(ms) {
     var s = Math.max(0, Math.round((Date.now() - ms) / 1000));
     if (s < 60) return 'just now';
     var m = Math.round(s / 60);
     if (m < 60) return m + ' min ago';
-    var h = Math.floor(m / 60);
-    return h + 'h ' + (m % 60) + 'm ago';
+    return Math.floor(m / 60) + 'h ' + (m % 60) + 'm ago';
   }
   function setStatus(mode, txt) {
     el('dotEl').className = 'dot' + (mode === 'live' ? ' live' : mode === 'err' ? ' err' : '');
@@ -206,127 +202,151 @@
     var v = el('v-' + id);
     v.textContent = String(main);
     v.className = 'val';
-    if (sub != null) el('s-' + id).textContent = sub;
+    if (sub != null) el('s-' + id).innerHTML = sub;
   }
-  function pct(part, whole) { return whole ? Math.round((part / whole) * 100) + '%' : null; }
 
   function render(d) {
-    setTile('signups', num(d.signups_since_blast), num(d.signups_last_hour) + ' in last hour · ' + num(d.signups_alltime) + ' cohort all-time');
-    setTile('cta', num(d.cta_since_blast), num(d.cta_last_hour) + ' in last hour · /managertools only');
-    setTile('trials', num(d.trials_since_blast), num(d.trials_alltime) + ' cohort all-time');
-    setTile('onb', num(d.onboarding_since_blast), num(d.onboarding_alltime) + ' cohort all-time');
-    setTile('intake', num(d.intake_since_blast), num(d.intake_alltime) + ' cohort all-time');
-    setTile('act', num(d.activated_since_blast), num(d.activated_alltime) + ' cohort all-time');
-    var mtViews = num(d.views_mt_since_blast);
-    setTile('views', num(d.views_since_blast),
-      mtViews > 0
-        ? mtViews + ' on /managertools (' + num(d.views_mt_last_hour) + ' last hour) · ' + num(d.views_last_hour) + ' total last hour'
-        : num(d.views_last_hour) + ' in last hour · all landing pages*');
-
-    var regs = num(d.signups_since_blast);
-    var rates = [];
-    if (regs > 0) {
-      rates.push(['Reg -> Trial', pct(num(d.trials_since_blast), regs)]);
-      rates.push(['Reg -> Onboarding', pct(num(d.onboarding_since_blast), regs)]);
-      rates.push(['Reg -> Intake', pct(num(d.intake_since_blast), regs)]);
-      rates.push(['Reg -> Activated', pct(num(d.activated_since_blast), regs)]);
+    var baseline = Number(d.baseline_daily_avg || 0);
+    var s30 = num(d.signups_30d);
+    var expected30 = baseline * 30;
+    var vs = '';
+    if (baseline > 0) {
+      var mult = expected30 > 0 ? (s30 / expected30) : 0;
+      vs = mult >= 1.15
+        ? '<span style="color:var(--good-text);font-weight:700">' + mult.toFixed(1) + 'x prior baseline</span>'
+        : mult <= 0.85
+          ? Math.round(mult * 100) + '% of prior baseline'
+          : 'in line with baseline';
+      vs += ' &middot; baseline ' + baseline.toFixed(2) + '/day';
     }
-    el('rates').innerHTML = rates.map(function (r) { return '<span>' + r[0] + ': <b>' + r[1] + '</b></span>'; }).join('');
+    setTile('30d', s30, vs || '&nbsp;');
+    setTile('today', num(d.signups_today), 'since midnight, your time');
+    setTile('7d', num(d.signups_7d), baseline > 0 ? 'baseline would be ~' + (baseline * 7).toFixed(1) : '&nbsp;');
+    setTile('engaged', num(d.engaged_7d), 'users with any activity');
+    setTile('total', num(d.total_users), 'all time');
 
-    renderChart(d.hourly || []);
-    renderCohortEvents(d.cohort_events || []);
+    renderFunnel(d.funnel || {});
+    renderSources(d.sources || []);
+    renderChart(d.daily || [], baseline);
   }
 
-  function labelForEvent(name) {
-    var map = {
-      resume_uploaded: 'Resume uploaded', linkedin_imported: 'LinkedIn imported',
-      company_added: 'Company added to pipeline', contact_added: 'Contact added',
-      strategy_brief_generated: 'Strategy brief generated', prep_brief_generated: 'Prep brief generated',
-      briefing_viewed: 'Daily briefing viewed', signals_page_viewed: 'Signals page viewed',
-      onboarding_started: 'Onboarding started', briefing_configured: 'Briefing configured',
-      outreach_draft_generated: 'Outreach draft generated'
-    };
-    return map[name] || name;
+  var FUNNEL_STAGES = [
+    { key: 'signed_up', name: 'Signed up', color: 'var(--step-1)' },
+    { key: 'started_onboarding', name: 'Started onboarding', color: 'var(--step-2)' },
+    { key: 'completed_onboarding', name: 'Finished onboarding', color: 'var(--step-3)' },
+    { key: 'activated', name: 'Added a company', color: 'var(--step-4)' }
+  ];
+
+  function renderFunnel(f) {
+    var total = num(f.signed_up);
+    var host = el('funnel');
+    if (!total) { host.innerHTML = '<div class="empty">No signups in the last 30 days.</div>'; return; }
+    var html = '';
+    FUNNEL_STAGES.forEach(function (stage, i) {
+      var v = num(f[stage.key]);
+      var pctOfTotal = Math.round((v / total) * 100);
+      var widthPct = Math.max(1.5, (v / total) * 100);
+      var drop = '';
+      if (i > 0) {
+        var prev = num(f[FUNNEL_STAGES[i - 1].key]);
+        if (prev > 0 && v < prev) drop = '-' + (prev - v) + ' from previous';
+      }
+      html += '<div class="frow">'
+        + '<div class="fname">' + stage.name + '</div>'
+        + '<div class="fbarwrap">'
+        + '<div class="fbar" style="width:' + widthPct + '%;background:' + stage.color + '"><span>' + v + '</span></div>'
+        + '<div class="fmeta" style="left:' + widthPct + '%">' + pctOfTotal + '%' + (drop ? ' &middot; ' + drop : '') + '</div>'
+        + '</div></div>';
+    });
+    host.innerHTML = html;
   }
 
-  function renderCohortEvents(rows) {
-    var host = el('cohortEvents');
-    if (!rows.length) { host.className = 'empty'; host.textContent = 'No cohort activity yet.'; return; }
+  var SOURCE_LABELS = {
+    managertools: 'Manager Tools',
+    executive_coach_referral: 'Executive coach referral',
+    linkedin: 'LinkedIn',
+    google_web_search: 'Google / web search',
+    colleague_or_peer: 'Colleague or peer',
+    other: 'Other'
+  };
+  function labelSource(s) {
+    if (SOURCE_LABELS[s]) return SOURCE_LABELS[s];
+    if (s && s.indexOf('other:') === 0) return 'Other: ' + s.slice(6);
+    return s;
+  }
+
+  function renderSources(rows) {
+    var host = el('sources');
+    if (!rows.length) { host.className = 'empty'; host.textContent = 'No signups in the last 30 days.'; return; }
+    var total = rows.reduce(function (acc, r) { return acc + num(r.n); }, 0);
     host.className = 'scrollwrap';
-    var html = '<table class="data"><tr><th>Action</th><th>Count</th></tr>';
-    rows.forEach(function (r) { html += '<tr><td>' + labelForEvent(String(r.event_name)) + '</td><td>' + num(r.n) + '</td></tr>'; });
+    var html = '<table class="data"><tr><th>Source</th><th>Signups</th><th>Share</th></tr>';
+    rows.forEach(function (r) {
+      html += '<tr><td>' + labelSource(String(r.source)) + '</td><td>' + num(r.n) + '</td><td>'
+        + Math.round((num(r.n) / total) * 100) + '%</td></tr>';
+    });
     host.innerHTML = html + '</table>';
   }
 
   var chartModel = null;
-  function buildBuckets(hourly) {
-    var byHr = {};
-    hourly.forEach(function (r) { var t = Date.parse(r.hr); if (!isNaN(t)) byHr[t] = r; });
-    var nowHr = Math.floor(Date.now() / 3600000) * 3600000;
-    var buckets = [];
-    for (var i = 47; i >= 0; i--) {
-      var t = nowHr - i * 3600000;
-      var r = byHr[t] || {};
-      buckets.push({ t: t, views: num(r.views), cta: num(r.cta), signups: num(r.signups) });
+  function buildDays(daily) {
+    var byDay = {};
+    daily.forEach(function (r) { byDay[String(r.day)] = num(r.n); });
+    var out = [];
+    var today = new Date();
+    for (var i = 29; i >= 0; i--) {
+      var d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+      var key = d.toISOString().slice(0, 10);
+      out.push({ day: key, n: byDay[key] || 0 });
     }
-    return buckets;
+    return out;
   }
 
-  function renderChart(hourly) {
-    var buckets = buildBuckets(hourly);
-    var W = 1000, H = 260, padL = 40, padR = 120, padT = 12, padB = 30;
+  function renderChart(daily, baseline) {
+    var days = buildDays(daily);
+    var W = 940, H = 240, padL = 34, padR = 14, padT = 14, padB = 34;
     var plotW = W - padL - padR, plotH = H - padT - padB;
     var maxV = 0;
-    buckets.forEach(function (b) { maxV = Math.max(maxV, b.views, b.cta, b.signups); });
-    var yMax = Math.max(5, Math.ceil(maxV * 1.15));
-    var x = function (i) { return padL + (i / (buckets.length - 1)) * plotW; };
+    days.forEach(function (d) { maxV = Math.max(maxV, d.n); });
+    var yMax = Math.max(4, Math.ceil(Math.max(maxV, baseline) * 1.2));
     var y = function (v) { return padT + plotH - (v / yMax) * plotH; };
-    var series = [
-      { key: 'views', name: 'Landing views', cssVar: 'var(--series-1)' },
-      { key: 'cta', name: 'CTA clicks', cssVar: 'var(--series-2)' },
-      { key: 'signups', name: 'Registrations', cssVar: 'var(--series-3)' }
-    ];
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="min-width:640px" role="img" aria-label="Hourly landing views, CTA clicks and registrations for the last 48 hours">';
+    var slot = plotW / days.length;
+    var barW = Math.max(4, slot - 4);
+
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="min-width:620px" role="img" aria-label="Daily signups for the last 30 days">';
     var ticks = 4;
     for (var ti = 0; ti <= ticks; ti++) {
       var tv = Math.round((yMax / ticks) * ti);
       var ty = y(tv);
       svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + ty + '" y2="' + ty + '" stroke="var(--grid)" stroke-width="1"/>';
-      svg += '<text x="' + (padL - 8) + '" y="' + (ty + 4) + '" text-anchor="end" font-size="11" fill="var(--text-muted)" style="font-variant-numeric:tabular-nums">' + tv + '</text>';
+      svg += '<text x="' + (padL - 7) + '" y="' + (ty + 4) + '" text-anchor="end" font-size="11" fill="var(--text-muted)" style="font-variant-numeric:tabular-nums">' + tv + '</text>';
     }
+
+    days.forEach(function (d, i) {
+      if (!d.n) return;
+      var x = padL + i * slot + (slot - barW) / 2;
+      var h = Math.max(2, (d.n / yMax) * plotH);
+      svg += '<rect x="' + x.toFixed(1) + '" y="' + (padT + plotH - h).toFixed(1) + '" width="' + barW.toFixed(1)
+        + '" height="' + h.toFixed(1) + '" rx="4" fill="var(--series-1)"/>';
+    });
+
+    if (baseline > 0) {
+      var by = y(baseline);
+      svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + by + '" y2="' + by + '" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="5 4"/>';
+      svg += '<text x="' + (W - padR) + '" y="' + (by - 6) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">baseline ' + baseline.toFixed(2) + '/day</text>';
+    }
+
     svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(0) + '" y2="' + y(0) + '" stroke="var(--baseline)" stroke-width="1"/>';
-    for (var xi = 0; xi < buckets.length; xi += 6) {
-      svg += '<text x="' + x(xi) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-muted)">' + fmtHour(buckets[xi].t) + '</text>';
+    for (var xi = 0; xi < days.length; xi += 5) {
+      svg += '<text x="' + (padL + xi * slot + slot / 2) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-muted)">' + fmtDay(days[xi].day) + '</text>';
     }
-    if (BLAST_START_MS >= buckets[0].t && BLAST_START_MS <= buckets[buckets.length - 1].t) {
-      var bi = (BLAST_START_MS - buckets[0].t) / 3600000;
-      var bx = x(bi);
-      svg += '<line x1="' + bx + '" x2="' + bx + '" y1="' + padT + '" y2="' + (padT + plotH) + '" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4 4"/>';
-      svg += '<text x="' + (bx + 5) + '" y="' + (padT + 12) + '" font-size="11" fill="var(--text-secondary)">blast window</text>';
-    }
-    series.forEach(function (s) {
-      var pts = buckets.map(function (b, i) { return x(i).toFixed(1) + ',' + y(b[s.key]).toFixed(1); }).join(' ');
-      svg += '<polyline points="' + pts + '" fill="none" stroke="' + s.cssVar + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
-    });
-    var endLabels = series.map(function (s) { return { s: s, yv: y(buckets[buckets.length - 1][s.key]) }; }).sort(function (a, b) { return a.yv - b.yv; });
-    var ys = [], lastY = -20;
-    endLabels.forEach(function (o) { lastY = Math.max(o.yv, lastY + 14); ys.push(lastY); });
-    var overflow = Math.max(0, ys[ys.length - 1] - (padT + plotH + 6));
-    endLabels.forEach(function (o, i) {
-      var ly = ys[i] - overflow;
-      svg += '<circle cx="' + (W - padR + 4) + '" cy="' + ly + '" r="4" fill="' + o.s.cssVar + '"/>';
-      svg += '<text x="' + (W - padR + 12) + '" y="' + (ly + 4) + '" font-size="11.5" fill="var(--text-secondary)">' + o.s.name + '</text>';
-    });
-    svg += '<line id="xhair" x1="0" x2="0" y1="' + padT + '" y2="' + (padT + plotH) + '" stroke="var(--baseline)" stroke-width="1" style="display:none"/>';
-    series.forEach(function (s, si) {
-      svg += '<circle id="hpt' + si + '" r="4.5" fill="' + s.cssVar + '" stroke="var(--surface-1)" stroke-width="2" style="display:none"/>';
-    });
     svg += '<rect id="hitrect" x="' + padL + '" y="' + padT + '" width="' + plotW + '" height="' + plotH + '" fill="transparent"/>';
     svg += '</svg>';
+
     el('chartMount').innerHTML = svg;
-    chartModel = { buckets: buckets, x: x, y: y, padL: padL, plotW: plotW, series: series, W: W };
+    chartModel = { days: days, padL: padL, slot: slot, W: W };
     wireHover();
-    renderHourlyTable(buckets);
+    renderDailyTable(days);
   }
 
   function wireHover() {
@@ -335,55 +355,32 @@
     var hit = mount.querySelector('#hitrect');
     var tip = el('tip');
     if (!svgEl || !hit || !chartModel) return;
-    function onMove(evt) {
+    hit.addEventListener('mousemove', function (evt) {
       var m = chartModel;
       var rect = svgEl.getBoundingClientRect();
       var scale = m.W / rect.width;
       var sx = (evt.clientX - rect.left) * scale;
-      var i = Math.round(((sx - m.padL) / m.plotW) * (m.buckets.length - 1));
-      i = Math.max(0, Math.min(m.buckets.length - 1, i));
-      var b = m.buckets[i];
-      var cx = m.x(i);
-      var xh = mount.querySelector('#xhair');
-      xh.style.display = '';
-      xh.setAttribute('x1', cx); xh.setAttribute('x2', cx);
-      m.series.forEach(function (s, si) {
-        var pt = mount.querySelector('#hpt' + si);
-        pt.style.display = '';
-        pt.setAttribute('cx', cx);
-        pt.setAttribute('cy', m.y(b[s.key]));
-      });
-      tip.innerHTML = '<div class="t">' + fmtWhen(b.t) + '</div>' + m.series.map(function (s) {
-        return '<div class="r"><span class="sw" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:' + s.cssVar + '"></span>' + s.name + '<b>' + b[s.key] + '</b></div>';
-      }).join('');
+      var i = Math.floor((sx - m.padL) / m.slot);
+      i = Math.max(0, Math.min(m.days.length - 1, i));
+      var d = m.days[i];
+      tip.innerHTML = '<div class="t">' + fmtDay(d.day) + '</div><div class="r">Signups: <b>' + d.n + '</b></div>';
       tip.style.display = 'block';
       var box = el('chartbox').getBoundingClientRect();
       var tx = evt.clientX - box.left + 14;
       if (tx + tip.offsetWidth > box.width - 8) tx = evt.clientX - box.left - tip.offsetWidth - 14;
       tip.style.left = Math.max(4, tx) + 'px';
       tip.style.top = Math.max(0, evt.clientY - box.top - tip.offsetHeight - 12) + 'px';
-    }
-    function onLeave() {
-      tip.style.display = 'none';
-      var xh = mount.querySelector('#xhair');
-      if (xh) xh.style.display = 'none';
-      chartModel.series.forEach(function (s, si) {
-        var pt = mount.querySelector('#hpt' + si);
-        if (pt) pt.style.display = 'none';
-      });
-    }
-    hit.addEventListener('mousemove', onMove);
-    hit.addEventListener('mouseleave', onLeave);
+    });
+    hit.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
   }
 
-  function renderHourlyTable(buckets) {
-    var html = '<tr><th>Hour</th><th>Landing views</th><th>CTA clicks</th><th>Registrations</th></tr>';
-    for (var i = buckets.length - 1; i >= 0; i--) {
-      var b = buckets[i];
-      if (!b.views && !b.cta && !b.signups) continue;
-      html += '<tr><td>' + fmtWhen(b.t) + '</td><td>' + b.views + '</td><td>' + b.cta + '</td><td>' + b.signups + '</td></tr>';
+  function renderDailyTable(days) {
+    var html = '<tr><th>Day</th><th>Signups</th></tr>';
+    for (var i = days.length - 1; i >= 0; i--) {
+      if (!days[i].n) continue;
+      html += '<tr><td>' + fmtDay(days[i].day) + '</td><td>' + days[i].n + '</td></tr>';
     }
-    el('hourlyTable').innerHTML = html;
+    el('dailyTable').innerHTML = html;
   }
 
   var pollTimer = null;
@@ -403,33 +400,21 @@
     el('refreshBtn').disabled = true;
     setStatus('live', state.data ? 'Refreshing...' : 'Loading...');
     fetch(jsonUrl, { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (d) {
-        state.refreshing = false;
-        state.retried = false;
+        state.refreshing = false; state.retried = false;
         el('refreshBtn').disabled = false;
-        state.data = d;
-        state.lastUpdatedMs = Date.now();
-        hideBanner();
-        setStatus('live', 'Live');
-        render(d);
-        tick();
-        scheduleNext();
+        state.data = d; state.lastUpdatedMs = Date.now();
+        hideBanner(); setStatus('live', 'Live');
+        render(d); tick(); scheduleNext();
       })
       .catch(function (e) {
         state.refreshing = false;
         el('refreshBtn').disabled = false;
         setStatus(state.data ? 'live' : 'err', state.data ? 'Live (last refresh kept)' : 'Refresh failed');
         showBanner('Refresh failed.', (state.data ? 'Showing the last successful data. ' : '') + 'Will retry automatically. Detail: ' + e.message);
-        if (!state.retried) {
-          state.retried = true;
-          setTimeout(function () { fetchData(); }, 4000 + Math.random() * 3000);
-        } else {
-          scheduleNext();
-        }
+        if (!state.retried) { state.retried = true; setTimeout(function () { fetchData(); }, 4000 + Math.random() * 3000); }
+        else { scheduleNext(); }
       });
   }
 
@@ -437,7 +422,7 @@
     if (state.lastUpdatedMs) {
       el('updatedTxt').textContent = 'Last refresh: ' + fmtWhen(state.lastUpdatedMs) + ' (' + ago(state.lastUpdatedMs) + ')';
       var nextIn = Math.max(0, Math.round((state.lastUpdatedMs + REFRESH_MS - Date.now()) / 60000));
-      el('nextTxt').textContent = 'Auto-refresh every 15 min · next in ~' + nextIn + ' min';
+      el('nextTxt').textContent = 'Auto-refresh every 15 min - next in ~' + nextIn + ' min';
     }
   }
   setInterval(tick, 30000);
